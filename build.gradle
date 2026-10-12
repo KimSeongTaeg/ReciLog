@@ -1,56 +1,63 @@
+// [Spring Boot Gradle 빌드 및 의존성 라이브러리 설정 파일]
 plugins {
-    id 'java'
-    id 'org.springframework.boot' version '4.1.1'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'java' // Java 언어 지원 플러그인을 적용
+    id 'org.springframework.boot' version '4.1.1' // Spring Boot 4.1.1 프레임워크 플러그인 적용
+    id 'io.spring.dependency-management' version '1.1.7' // 의존성 버전을 자동으로 관리해주는 플러그인 적용
 }
 
-group = 'com.project'
-version = '0.0.1-SNAPSHOT'
-description = 'ReciLog'
+group = 'com.project' // 프로젝트의 그룹 아이디 설정
+version = '0.0.1-SNAPSHOT' // 프로젝트의 현재 개발 버전 설정
+description = 'ReciLog' // 프로젝트 상세 설명
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(21) // 자바 컴파일러 및 실행 환경을 JDK 21 버전으로 타겟팅
     }
 }
 
 configurations {
     compileOnly {
-        extendsFrom annotationProcessor
+        extendsFrom annotationProcessor // 컴파일 타임에 롬복 등의 어노테이션 프로세서를 사용할 수 있도록 설정
     }
 }
 
 repositories {
-    mavenCentral()
+    mavenCentral() // 라이브러리를 다운로드받을 중앙 중앙 마이븐 라이브러리 저장소 지정
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    // Web & JPA & Security Starter
+    implementation 'org.springframework.boot:spring-boot-starter-web' // RESTful Web 서비스 구축용 MVC 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // ORM 데이터베이스 연동을 위한 Spring Data JPA 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-security' // 인증 및 권한 부여를 위한 Spring Security 스타터
+    implementation 'org.springframework.boot:spring-boot-starter-validation' // Request Body 값 검증용 유효성 검사 스타터
 
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'com.mysql:mysql-connector-j'
-    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+    // Database Drivers
+    runtimeOnly 'com.h2database:h2' // 개발 및 테스트용 In-Memory H2 데이터베이스 엔진
+    runtimeOnly 'com.mysql:mysql-connector-j' // 배포 환경 연결용 MySQL JDBC 드라이버
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client' // MariaDB JDBC 드라이버
 
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
-    testCompileOnly 'org.projectlombok:lombok'
-    testAnnotationProcessor 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-starter-devtools'
+    // Lombok Code Generator
+    compileOnly 'org.projectlombok:lombok' // @Getter, @Builder 등 자동 코드 생성 라이브러리
+    annotationProcessor 'org.projectlombok:lombok' // 롬복 롬복 어노테이션 컴파일러 프로세서
+    testCompileOnly 'org.projectlombok:lombok' // 테스트 환경용 롬복 컴파일 옵션
+    testAnnotationProcessor 'org.projectlombok:lombok' // 테스트 환경용 롬복 프로세서
+    developmentOnly 'org.springframework.boot:spring-boot-starter-devtools' // 소스 변경 시 서버 자동 재시작 도구
 
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    // JWT (JSON Web Token)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5' // JWT 인터페이스 라이브러리
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5' // JWT 구현체 라이브러리
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JWT JSON 직렬화 및 역직렬화용 Jackson 확장 모듈
 
-    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+    // Apache POI (Excel Stream Generation)
+    implementation 'org.apache.poi:poi-ooxml:5.2.5' // 엑셀(.xlsx) 파일 생성 및 스트림 반환용 Apache POI 라이브러리
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    // Testing Starters
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Spring Boot 단위/통합 테스트 프레임워크
+    testImplementation 'org.springframework.security:spring-security-test' // Spring Security 모킹 및 테스트 도구
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // JUnit 5 실행 플랫폼 플러그인
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+    useJUnitPlatform() // 단위 테스트 수행 시 JUnit5 플랫폼 기반 테스트 엔진 사용 설정
 }
